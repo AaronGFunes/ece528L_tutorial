@@ -117,6 +117,50 @@ void LED2_Output(uint8_t led_value)
     P2->OUT = (P2->OUT & 0xF8) | (led_value & 0x07);
 }
 
+
+/**
+ * @brief The LED1_Status function indicates the status of the built-in red LED loacted at pin P1.0.
+ *
+ * @param None
+ *
+ * @return uint8_t The value representing the status of the built-in red LED.
+ * - 0 : Red LED OFF
+ * - 1 : Red LED ON
+ *
+ */
+
+uint8_t LED1_Status()
+{
+    uint8_t LED1_Status = P1->OUT & 0x01;
+    return LED1_Status;
+}
+
+/*
+ * @brief The LED2_Status function indicates the status of the RGB LED located at pins P2.0-P2.2
+ *
+ * @param None
+ *
+ * @return uint8_t The value representing the status of the RGB LED.
+ *
+ * Color LED(s) rgb_led_value
+ * Off    ---     0x00
+ * Red    R--     0x01
+ * Green  -G-     0x02
+ * Yellow RG-     0x03
+ * Blue   --B     0x04
+ * Pink   R-B     0x05
+ * Sky B  -GB     0x06
+ * White  RGB     0x07
+ *
+ */
+
+uint8_t LED2_Status()
+{
+    uint8_t LED2_Status = P2->OUT & 0x07;
+    return LED2_Status;
+}
+
+
 int main(void)
 {
     // Initialize the 48 MHz Clock
@@ -130,10 +174,14 @@ int main(void)
     {
         LED1_Output(RED_LED_ON);
         LED2_Output(RGB_LED_GREEN);
+        uint8_t LED1_Value = LED1_Status();
+        uint8_t LED2_Value = LED2_Status();
         Clock_Delay1ms(1000);
 
         LED1_Output(RED_LED_OFF);
         LED2_Output(RGB_LED_OFF);
+        LED1_Value = LED1_Status();
+        LED2_Value = LED2_Status();
         Clock_Delay1ms(1000);
     }
 }
